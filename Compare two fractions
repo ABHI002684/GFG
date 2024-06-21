@@ -1,0 +1,81 @@
+/*
+You are given a string str containing two fractions a/b and c/d, compare them and return the greater. If they are equal, then return "equal".
+Note: The string str contains "a/b, c/d"(fractions are separated by comma(,) & space( )). 
+
+Examples
+Input: str = "5/6, 11/45"
+Output: 5/6
+Explanation: 5/6=0.8333 and 11/45=0.2444, So 5/6 is greater fraction.
+
+Input: str = "8/1, 8/1"
+Output: equal
+Explanation: We can see that both the fractions are same, so we'll return a string "equal".
+
+Input: str = "10/17, 9/10"
+Output: 9/10
+Explanation: 10/17 = 0.588 & 9/10 = 0.9, so the greater fraction is "9/10".
+
+Expected Time Complexity: O(len|str|)
+Expected Auxiliary Space: O(1)
+
+Constraints:
+0<=a,c<=10^3
+1<=b,d<=10^3
+
+*/
+
+class Solution {
+  public:
+    string compareFrac(string str) {
+
+        int j=0,n=str.size();
+        int a=0,b=0,c=0,d=0;
+        int i=0;
+        while(j<n)
+        {
+            if(str[j]=='/'){
+                string temp=str.substr(i,j-i);
+                a=stoi(temp);
+                i=j+1;
+            }
+            
+            if(str[j]==','){
+                string temp=str.substr(i,j-i+1);
+                b=stoi(temp);
+                i=j+2;
+                break;
+            }
+            j++;
+        }
+        while(j<n)
+        {
+            if(str[j]=='/'){
+                string temp=str.substr(i,j-i);
+                c=stoi(temp);
+                i=j+1;
+            }
+            
+            if(j==n-1){
+                string temp=str.substr(i,j-i+1);
+                d=stoi(temp);
+                break;
+            }
+            j++;
+        }
+        
+        double frac1=(double) a/ (double) b;
+        double frac2=(double) c/ (double) d;
+        
+        if(frac1==frac2) return "equal";
+        
+        if(frac1>frac2){
+            string temp1=to_string(a);
+            string temp2=to_string(b);
+            return temp1+"/"+temp2;
+        }else{
+            string temp1=to_string(c);
+            string temp2=to_string(d);
+            return temp1+"/"+temp2;
+        }
+    }
+};
