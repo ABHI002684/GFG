@@ -1,0 +1,53 @@
+/*
+Given a sentence containing several words and numbers. Find the largest number among them which does not contain 9. If no such number exists, return -1.
+Note: Numbers and words are separated by spaces only.
+
+Examples :
+Input: sentence="This is alpha 5057 and 97"
+Output: 5057
+Explanation: 5057 is the only number that does not have a 9.
+
+Input: sentence="Another input 9007"
+Output: -1
+Explanation: Since there is no number thatdoes not contain a 9,output is -1.
+
+Expected Time Complexity: O(n)
+Expected Auxillary Space: O(n)
+
+Constraints:
+1<=n<=10^6
+1<=answer<=10^18
+
+n is the length of a given sentence.
+
+*/
+
+class Solution {
+  public:
+    long long ExtractNumber(string sentence) {
+        
+        long long int maxi=-1;
+        int n=sentence.size();
+        for(int i=0;i<n;i++)
+        {
+            long long n1=0;
+            bool valid=true;
+            while(sentence[i]!=' ' && (sentence[i]>='0' && sentence[i]<='9') && i<n)
+            {
+                int x=(sentence[i]-'0');
+                if(x==9) valid=false;
+                
+                n1=(n1*10)+x;
+                i++;
+            }
+            
+            if(valid==true){
+                maxi=max(maxi,n1);
+            }
+        }
+        
+        if(maxi==0) return -1;
+        
+        return maxi;
+    }
+};
