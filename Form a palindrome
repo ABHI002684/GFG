@@ -1,0 +1,47 @@
+/*
+Given a string, find the minimum number of characters to be inserted to convert it to a palindrome.
+
+Examples :
+Input: str = "abcd"
+Output: 3
+Explanation: Inserted character marked with bold characters in dcbabcd, here we need minimum three characters to make it palindrome.
+
+Input: str = "aa"
+Output: 0
+Explanation: "aa" is already a palindrome.
+
+Expected Time Complexity: O(n^2)
+Expected Auxiliary Space: O(n^2)
+
+Constraints:
+1 ≤ |str| ≤ 500
+str contains only lowercase alphabets.
+
+*/
+class Solution{
+  public:
+    int longestCommonSubsequenceHelper(string& text1, string& text2,int i,int j,vector<vector<int>>& dp)
+    {
+        if(i==text1.size() || j==text2.size()) return 0;
+        if(dp[i][j]!=-1) return dp[i][j];
+        if(text1[i]==text2[j]){
+            return dp[i][j]=1+longestCommonSubsequenceHelper(text1,text2,i+1,j+1,dp);
+        }else{
+            //there are now two option eithe increment i or j
+            //option1 incrementing i, j remains same
+            int op1=longestCommonSubsequenceHelper(text1,text2,i+1,j,dp);
+            //option2 incrementing j, i remains same
+            int op2=longestCommonSubsequenceHelper(text1,text2,i,j+1,dp);
+
+            return dp[i][j]=max(op1,op2);
+        }
+    }
+    int countMin(string s){
+        int n=s.size();
+        vector<vector<int>>dp(n+1,vector<int>(n+1,-1));
+        string t=s;
+        reverse(s.begin(),s.end());
+        int x=longestCommonSubsequenceHelper(t,s,0,0,dp);
+        return n-x;
+    }
+};
