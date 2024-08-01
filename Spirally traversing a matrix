@@ -1,0 +1,71 @@
+/*
+You are given a rectangular matrix, and your task is to return an array while traversing the matrix in spiral form.
+
+Examples:
+Input: matrix[][] = [[1, 2, 3, 4],
+                  [5, 6, 7, 8],
+                  [9, 10, 11, 12],
+                  [13, 14, 15,16]]
+Output: [1, 2, 3, 4, 8, 12, 16, 15, 14, 13, 9, 5, 6, 7, 11, 10]
+
+
+Input: matrix[][] = [[1, 2, 3, 4],
+                  [5, 6, 7, 8],
+                  [9, 10, 11, 12]]
+Output: [1, 2, 3, 4, 8, 12, 11, 10, 9, 5, 6, 7]
+Explanation: Applying same technique as shown above, output for the 2nd testcase will be 1 2 3 4 8 12 11 10 9 5 6 7.
+
+Expected Time Complexity: O(n^2)
+Expected Auxiliary Space: O(n^2)
+
+Constraints:
+1 <= matrix.size(), matrix[0].size() <= 100
+0 <= matrix[i][j]<= 100
+
+*/
+class Solution {
+  public:
+    vector<int> spirallyTraverse(vector<vector<int> > &matrix) {
+        int m=matrix.size();
+        int n=matrix[0].size();
+        int total_elements=m*n;
+        int count=0;
+        int startingRow=0;
+        int endingCol=n-1;
+        int endingRow=m-1;
+        int startingCol=0;
+        vector<int>ans;
+        while(count<total_elements)
+        {
+            //starting row printing
+            for(int i=startingCol;i<=endingCol && count<total_elements;i++)
+            {
+                ans.push_back(matrix[startingRow][i]);
+                count++;
+            }
+            startingRow++;
+            //ending col printing
+            for(int i=startingRow;i<=endingRow && count<total_elements;i++)
+            {
+                ans.push_back(matrix[i][endingCol]);
+                count++;
+            }
+            endingCol--;
+            //ending row printing
+            for(int i=endingCol;i>=startingCol && count<total_elements;i--)
+            {
+                ans.push_back(matrix[endingRow][i]);
+                count++;
+            }
+            endingRow--;
+            //starting col printing
+            for(int i=endingRow;i>=startingRow && count<total_elements;i--)
+            {
+                ans.push_back(matrix[i][startingCol]);
+                count++;
+            }
+            startingCol++;
+        }
+        return ans;
+    }
+};
