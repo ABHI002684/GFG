@@ -1,0 +1,67 @@
+/*
+Given two strings str1 and str2. Return the minimum number of operations required to convert str1 to str2.
+The possible operations are permitted:
+
+Insert a character at any position of the string.
+Remove any character from the string.
+Replace any character from the string with any other character.
+
+Examples:
+Input: str1 = "geek", srt2 = "gesek"
+Output: 1
+Explanation: One operation is required, inserting 's' between two 'e'.
+
+Input : str1 = "gfg", str2 = "gfg"
+Output: 0
+Explanation: Both strings are same.
+
+Expected Time Complexity: O(|str1|*|str2|)
+Expected Space Complexity: O(|str1|*|str2|)
+
+Constraints:
+1 ≤ str1.length(), str2.length() ≤ 100
+Both the strings are in lowercase.
+
+*/
+class Solution {
+  public:
+   int editDistanceHelper(string& s, string& t,int i,int j,vector<vector<int>>& dp)
+    {
+        if(i==s.size() && j==t.size()) return 0;
+        if(dp[i][j]!=-1){
+            return dp[i][j];
+        }
+        if(i==s.size()){
+            //if s have less character than t then we have to insert remaining character of t
+            return dp[i][j]=t.size()-j;
+        }
+
+        if(j==t.size()){
+            //if t have less character than s then we have to delete remaining character of s
+            return dp[i][j]=s.size()-i;
+        }
+
+        if(s[i]==t[j]){
+            //if character is same so there will be no operation
+            return dp[i][j]= editDistanceHelper(s,t,i+1,j+1,dp);
+        }else{
+            //if character is not same there is three operation that we can do
+
+            //insert-for this we will increment j and i remain same(because current j is inserted)
+            int op1=1+editDistanceHelper(s,t,i,j+1,dp);
+
+            //delete-for this we will increment i and j remain same(because current i is deleted)
+            int op2=1+editDistanceHelper(s,t,i+1,j,dp);
+
+            //replace-for this we will increment beacause we have replace current i and j
+            //now they are sorted so we will move forward 
+            int op3=1+editDistanceHelper(s,t,i+1,j+1,dp);
+
+            return dp[i][j]=min({op1,op2,op3});
+        }
+    }
+    int editDistance(string s, string t) {
+        vector<vector<int>>dp(s.size()+1,vector<int>(t.size()+1,-1));
+        return editDistanceHelper(s,t,0,0,dp);
+    }
+};
