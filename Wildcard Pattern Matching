@@ -1,0 +1,58 @@
+/*
+Given two strings pattern and str which may be of different size, You have to return 1 if the wildcard pattern i.e. pattern, matches with str else return 0. 
+All characters of the string str and pattern always belong to the Alphanumeric characters.
+
+The wildcard pattern can include the characters ? and *
+‘?’ – matches any single character.
+‘*’ – Matches any sequence of characters (including the empty sequence).
+
+Note: The matching should cover the entire str (not partial str).
+
+Examples:
+Input: pattern = "ba*a?", str = "baaabab"
+Output: 1
+Explanation: replace '*' with "aab" and 
+'?' with 'b'.
+
+Input: pattern = "a*ab", str = "baaabab"
+Output: 0
+Explanation: Because in string pattern character 'a' at first position,
+pattern and str can't be matched. 
+
+Expected Time Complexity: O(n*m)
+Expected Auxiliary Space: O(n*m)
+
+Constraints:
+1 <= length of(str, pattern) <= 200
+*/
+class Solution {
+  public:
+    /*You are required to complete this method*/
+    int wildCardHelper(int i,int j,string pattern, string str,vector<vector<int>>& dp){
+        if(i==pattern.size() && j==str.size()) return 1;
+        if(i==pattern.size()) return 0;
+        if(j==str.size() && pattern[i]=='*') return wildCardHelper(i+1,j,pattern,str,dp);
+        if(j==str.size()) return 0;
+        if(pattern[i]!='?' && pattern[i]!='*' && pattern[i]!=str[j]) return 0;
+        
+        if(dp[i][j]!=-1){
+            return dp[i][j];
+        }
+        
+        int a=0,b=0,c=0;
+        
+        if(pattern[i]=='*'){
+            a=wildCardHelper(i+1,j,pattern,str,dp);//empty
+            b=wildCardHelper(i,j+1,pattern,str,dp);// multiple
+        }
+        
+        c=wildCardHelper(i+1,j+1,pattern,str,dp);//for ? or if character matches
+        
+        return dp[i][j]=a|b|c;
+    }
+    int wildCard(string pattern, string str) {
+        int n=pattern.size(),m=str.size();
+        vector<vector<int>> dp(n+1,vector<int>(m+1,-1));
+        return wildCardHelper(0,0,pattern,str,dp);
+    }
+};
