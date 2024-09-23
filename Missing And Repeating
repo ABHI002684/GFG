@@ -1,0 +1,48 @@
+/*
+Given an unsorted array arr of of positive integers. One number 'A' from set {1, 2,....,n} is missing and one number 'B' occurs twice in array. Find numbers A and B.
+
+Examples
+Input: arr[] = [2, 2]
+Output: 2 1
+Explanation: Repeating number is 2 and smallest positive missing number is 1.
+
+Input: arr[] = [1, 3, 3] 
+Output: 3 2
+Explanation: Repeating number is 3 and smallest positive missing number is 2.
+
+Expected Time Complexity: O(n)
+Expected Auxiliary Space: O(1)
+
+Constraints:
+2 ≤ n ≤ 10^5
+1 ≤ arr[i] ≤ n
+*/
+class Solution {
+  public:
+    vector<int> findTwoElement(vector<int>& arr) {
+           int n = arr.size();
+       vector<int> ans(2);
+        
+        // Find the repeating element
+        for (int i = 0; i < n; i++) {
+            int index = abs(arr[i]) - 1;
+            if (arr[index] < 0) {
+                // If it's already negative, this is the repeating element
+                ans[0] = abs(arr[i]);
+            } else {
+                // Mark the element by making it negative
+                arr[index] = -arr[index];
+            }
+        }
+        
+        // Find the missing element
+        for (int i = 0; i < n; i++) {
+            if (arr[i] > 0) {
+                // The missing element corresponds to the unmarked index (i + 1)
+                ans[1] = i + 1;
+            }
+        }
+        
+        return ans;
+    }
+};
