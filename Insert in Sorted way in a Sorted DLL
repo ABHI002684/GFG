@@ -1,0 +1,58 @@
+/*
+Given a sorted doubly linked list and an element x, you need to insert the element x into the correct position in the sorted Doubly linked list(DLL).
+
+Note: The DLL is sorted in ascending order
+
+Example:
+Input: LinkedList: 3->5->8->10->12 , x = 9
+Output: 3->5->8->9->10->12
+Explanation: Here node 9 is inserted in the Doubly Linked-List.
+
+Input: LinkedList: 1->4->10->11 , x = 15
+Output: 1->4->10->11->15
+
+Constraints:
+1 <= number of nodes <= 10^3
+1 <= node -> data , x <= 10^4
+*/
+/*structure of the node of the DLL is as
+struct Node {
+    int data;
+    struct Node* prev, *next;
+};
+*/
+// function should insert a new node in sorted way in
+// a sorted doubly linked list
+// Return the head after insertion
+class Solution {
+  public:
+    Node* sortedInsert(Node* head, int x) {
+        Node *newNode = new Node();
+        newNode->data = x;
+        if (!head){
+        return newNode;
+        }
+        if (head->data > x){
+        newNode->next = head;
+        head->prev = newNode;
+        return newNode;
+        }
+        
+        Node *curr = head;
+        Node *temp = NULL;
+        while (curr)
+        {
+        if (curr->data <= x){
+            temp = curr;
+            }
+        curr = curr->next;
+        }
+        newNode->next = temp->next;
+        newNode->prev = temp;
+        temp->next = newNode;
+        if (newNode->next){
+        newNode->next->prev = newNode;
+        }
+        return head;
+    }
+};
